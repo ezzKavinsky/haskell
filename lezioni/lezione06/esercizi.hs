@@ -29,8 +29,6 @@ merge (x:xs) (y:ys) | x<=y = x:merge xs (y:ys)
                     | otherwise = y:merge (x:xs) ys
 
 msort :: Ord a => [a] -> [a]
-msort [] = []
 msort [x] = [x]
-msort xs = let (ys,zs) = halve xs in merge (msort ys) (msort zs)
-halve :: [a] -> ([a],[a])
-halve xs = splitAt (length xs `div` 2) xs
+msort xs = msort(take half xs) `merge` msort(drop half xs)
+  where half = length xs `div` 2
