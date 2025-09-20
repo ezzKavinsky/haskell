@@ -1,6 +1,6 @@
 {-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
 {-# HLINT ignore "Use foldr" #-}
-import Prelude hiding (replicate, concat, and)
+import Prelude hiding (elem, (!!), replicate, concat, and)
 and :: [Bool] -> Bool
 and [] = True
 and (x:xs) = x && and xs
@@ -12,3 +12,25 @@ concat (xs:xss) = xs ++ concat xss
 replicate :: Int -> a -> [a]
 replicate 0 _ = []
 replicate n x = x : replicate (n-1) x
+
+(!!) :: [a] -> Int -> a
+(!!) (x:_) 0 = x 
+(!!) (_:xs) n = (!!) xs (n-1)
+
+elem :: Eq a => a -> [a] -> Bool
+elem e (x:xs) | e == x    = True
+              | null xs   = False
+              | otherwise = elem e xs
+
+merge :: Ord a => [a] -> [a] -> [a]
+merge [] x = x
+merge x [] = x
+merge (x:xs) (y:ys) | x<=y = x:merge xs (y:ys)
+                    | otherwise = y:merge (x:xs) ys
+
+msort :: Ord a => [a] -> [a]
+msort [] = []
+msort [x] = [x]
+msort xs = let (ys,zs) = halve xs in merge (msort ys) (msort zs)
+halve :: [a] -> ([a],[a])
+halve xs = splitAt (length xs `div` 2) xs
