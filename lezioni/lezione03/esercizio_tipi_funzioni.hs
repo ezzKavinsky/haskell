@@ -13,8 +13,7 @@ pair x y = (x,y)
 double :: Num a => a -> a
 double x = x*2
 
-palindorme :: [a] -> Bool
+palindrome :: Eq a => [a] -> Bool
 palindrome xs = reverse xs == xs
 
-twice :: ()
 twice f x = f (f x)
